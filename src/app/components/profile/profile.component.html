@@ -1,0 +1,74 @@
+<div class="container p-3">
+<div class="row">
+    <div class="col-12">
+        <form [formGroup]="userProfileForm">
+            <div class="card">
+                <div class="card-header">
+                  <b>User Profile</b>
+                </div>
+                 <div class="card-body">
+                     <div class="row d-flex">
+                         <div class="col-6">
+                             <label class="pb-2">Name</label>   
+                            <input type="text" class="form-control" formControlName="name">
+                            <span class="text-danger" *ngIf="(userProfileForm.controls['name'].touched || userProfileForm.controls['name'].dirty) &&  userProfileForm.controls['name'].hasError('required')">Name is Required</span>
+                         </div>
+                         <div class="col-6">
+                           <label class="pb-2">Organization</label>   
+                          <input type="text" class="form-control" formControlName="organization">
+                          <span></span>
+                       </div>
+                     </div>
+                 </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <b>Contact Information</b>
+                </div>
+                 <div class="card-body" formArrayName="contacts">
+                     <div class="row">
+
+                         <div class="col-6"  *ngFor="let contact of ContactFormGroup.controls; let i = index;">
+                            <div class="row" [formGroupName]="i">
+                              <div class="col-6">
+                                  <label class="pb-2">Contact Type</label>   
+                                 <select class="form-control" formControlName="type" type="text" (change)="changeType(i)">
+                                     <option value="email">Email</option>
+                                     <option value="phone">Phone</option>
+                                 </select>
+                              </div>
+                              <div class="col-6">
+                                <label class="pb-2">Contact Label</label>   
+                                <input type="text" class="form-control" formControlName="contactName">
+                                <span class="text-danger" *ngIf="(getContactsFormGroup(i).controls.contactName.touched || getContactsFormGroup(i).controls.contactName.dirty) && getContactsFormGroup(i).controls.contactName.hasError('required')">
+                                    Contact Label is Requird.
+                                </span>
+                              </div>
+                              <div class="col-12 mt-2">
+                                  <label class="pb-2">Email/Phone</label>   
+                                  <input type="text" class="form-control" formControlName="value">
+                                  <span class="text-danger" *ngIf="(getContactsFormGroup(i).controls.value.touched || getContactsFormGroup(i).controls.value.dirty) && getContactsFormGroup(i).controls.value.hasError('email')">
+                                      Email is not Valid!
+                                  </span>
+                                  <span class="text-danger" *ngIf="(getContactsFormGroup(i).controls.value.touched || getContactsFormGroup(i).controls.value.dirty) && getContactsFormGroup(i).controls.value.hasError('required')">
+                                    This field is required.
+                                </span>
+                                <span class="text-danger" *ngIf="(getContactsFormGroup(i).controls['value'].touched || getContactsFormGroup(i).controls.value.dirty) && getContactsFormGroup(i).controls['value'].hasError('pattern')">
+                                    Phone Number is not Valid.
+                                </span>
+                              </div>
+                             </div>
+                             <div class="col-12 mt-2">
+                                 <button type="button" *ngIf="contactList.length>1"(click)="removeContact(i)" class="btn btn-danger mt-2 " style="float:right">Delete</button>
+                             </div>
+                            </div>
+                        </div>
+                        <button type="button" (click)="addContact()" class="btn btn-primary mt-2" style="margin-right:2px">Add Contact</button>
+                        <button type="button" (click)="submit()"  [disabled]="userProfileForm.invalid" class="btn btn-success mt-2" style="margin-right:2px">Submit</button>
+                 </div>
+              </div>
+             
+        </form>
+    </div>
+</div>
+</div>
